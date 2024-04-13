@@ -1,0 +1,43 @@
+# Java noise
+*.class
+*/target/*
+*/.settings/*
+.settings/*
+
+# SVN directories
+.svn
+
+# OSX noise
+.DS_Store
+*.pbxuser
+profile
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Windows noise
+desktop.ini
+
+# Node noise
+node_modules/*
+yarn.lock
+package-lock.json
+
+# Eclipse/Flash Builder noise
+.actionScriptProperties
+.flexProperties
+.project
+.classpath
+bin/*
+bin-debug/*
+report/*
+bin-test/*
+docs/*
+.flexLibProperties
+
+# Maven noise
+target/*
+
+# Project specific noise

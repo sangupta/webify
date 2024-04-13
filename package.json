@@ -8,6 +8,23 @@
         "email": "sandy.pec@gmail.com",
         "url": "https://sangupta.com"
     },
+    "repository": {
+        "url": "git+https://github.com/sangupta/webify.git",
+        "type": "git"
+    },
+    "bugs": {
+        "url": "https://github.com/sangupta/webify/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "tsconfig.json",
+        "package.json",
+        "README.md",
+        "dist/**",
+        "src/**"
+    ],
     "license": "Apache-2.0",
     "devDependencies": {
         "typescript": "^5.4.4",

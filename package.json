@@ -1,9 +1,9 @@
 {
     "name": "@sangupta/webify",
     "description": "A simple static site generator that uses markdown/HTML files to generate a Single Page Application website utilizing JSON for content.",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "source": "./src/webify.ts",
-    "bin": "./dist/webify.js",
+    "bin": "./dist/webify.cjs",
     "author": {
         "name": "Sandeep Gupta",
         "email": "sandy.pec@gmail.com",
@@ -41,11 +41,12 @@
         "tsx": "^4.7.2",
         "typescript": "^5.4.5",
         "unified": "^11.0.4",
-        "yaml-front-matter": "^4.1.1"
+        "yaml-front-matter": "^4.1.1",
+        "esbuild": "^0.20.2"
     },
     "scripts": {
         "webify": "tsx src/webify.ts",
         "tsc": "tsc --noEmit",
-        "build": "tsc"
+        "build": "tsc --noEmit && esbuild src/webify.ts --bundle --outfile=dist/webify.cjs --platform=node --target=node14 --format=cjs"
     }
 }

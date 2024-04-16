@@ -17,7 +17,7 @@ Check out https://sangupta.com that is built using `webify`.
 # Usage
 
 ```sh
-$ npx run @sangupta/webify {configFile} {distPath}
+$ npx @sangupta/webify {configFile} {distPath}
 ```
 
 where, `configFile` is the path to the `webify.json` file that

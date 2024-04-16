@@ -1,16 +1,16 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "target": "ESNext",
-        "module": "ESNext",
+        "target": "ES6",
         "strict": true,
+        "module": "commonjs",
         "lib": [
             "es2017"
         ],
         "allowSyntheticDefaultImports": true,
+        "sourceMap": false,
         "outDir": "./dist",
-        "sourceMap": true,
+        "esModuleInterop": true,
     },
     "exclude": [
         "node_modules"

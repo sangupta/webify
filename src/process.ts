@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import yamlFront from 'yaml-front-matter';
+import * as yamlFront from 'yaml-front-matter';
 import { computeWPM, extractDate, getRelativePath } from './utils.js';
 import { TEXT_FILE_EXTENSIONS, WORDS_PER_MINUTE } from './const.js';
 import { processMarkdownContent } from './markdown.js';
@@ -153,7 +153,7 @@ function writeProcessedFile(contentPath: string, pageType: PageType, data: Recor
     if (pageType) {
         data.type = pageType;
     }
-    
+
     const dataAsJson = JSON.stringify(data, null, 2);
     fs.writeFileSync(contentPath, dataAsJson);
 }

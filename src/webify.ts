@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { resolveConfig } from "./config";
 import { generateBlog } from "./engine";
 

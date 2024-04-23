@@ -84,6 +84,8 @@ export function readFiles(root: string, includes: Array<string> = [], excludes: 
 
     let files: fs.Dirent[] = fs.readdirSync(root, { withFileTypes: true, recursive: true });
 
+    console.log('Total files before filtering: ', (files || []).length);
+
     // filter these files for the includes/excludes
     includes.forEach(include => {
         files = files.filter((file: fs.Dirent) => {

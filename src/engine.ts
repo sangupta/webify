@@ -25,7 +25,6 @@ export async function generateBlog(configFile: string): Promise<void> {
     console.log('Config file read as: ', JSON.stringify(config, null, 2));
 
     // read all files from the source directory
-    console.log('Reading all files from the root folder...');
     const allFiles = readFiles(root, config?.build?.include, config?.build?.exclude);
 
     // log all files

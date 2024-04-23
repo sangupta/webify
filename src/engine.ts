@@ -22,9 +22,16 @@ export async function generateBlog(configFile: string): Promise<void> {
 
     // read config file
     const config = readConfig(configFile);
+    console.log('Config file read as: ', JSON.stringify(config, null, 2));
 
     // read all files from the source directory
+    console.log('Reading all files from the root folder...');
     const allFiles = readFiles(root, config?.build?.include, config?.build?.exclude);
+
+    // log all files
+    allFiles.forEach(file => {
+        console.log('  Found file: ', file.path + '/' + file.name);
+    });
 
     // create a dist folder
     const distFolder = path.join(root, 'dist');

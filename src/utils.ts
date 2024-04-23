@@ -109,5 +109,6 @@ export function readFiles(root: string, includes: Array<string> = [], excludes: 
         });
     });
 
+    console.log('Found a total of ', files.length, ' files.');
     return files;
 }

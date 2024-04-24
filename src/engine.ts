@@ -25,11 +25,11 @@ export async function generateBlog(configFile: string): Promise<void> {
     console.log('Config file read as: ', JSON.stringify(config, null, 2));
 
     // read all files from the source directory
-    const allFiles = readFiles(root, config?.build?.include, config?.build?.exclude);
+    const allFiles: string[] = readFiles(root, config?.build?.include, config?.build?.exclude);
 
     // log all files
     allFiles.forEach(file => {
-        console.log('  Found file: ', file.path + '/' + file.name);
+        console.log('  Found file: ', file);
     });
 
     // create a dist folder
@@ -61,7 +61,7 @@ export async function generateBlog(configFile: string): Promise<void> {
     for (let index = 0; index < allFiles.length; index++) {
         const file = allFiles[index];
 
-        const filePath: string = path.join(file.path, file.name);
+        const filePath: string = path.join(root, file);
         if (filePath.includes('/.')) {
             continue;
         }

@@ -58,8 +58,8 @@ export function computeWPM(text: string, wordsPerMinute: number = 238): number {
  * @param file the path to file
  * @returns the relative path of file
  */
-export function getRelativePath(root: string, file: string | fs.Dirent): string {
-    const fullPath = typeof file === 'string' ? file : path.join(file.path, file.name);
+export function getRelativePath(root: string, file: string): string {
+    const fullPath = file;
     const suffix = fullPath.substring(root.length);
 
     if (suffix.startsWith('/')) {
@@ -82,17 +82,17 @@ export function getRelativePath(root: string, file: string | fs.Dirent): string 
 export function readFiles(root: string, includes: Array<string> = [], excludes: Array<string> = []) {
     console.log('Reading all files from: ', root);
 
-    let files: fs.Dirent[] = fs.readdirSync(root, { withFileTypes: true, recursive: true });
+    let files: string[] = fs.readdirSync(root, { withFileTypes: false, recursive: true }) as string[];
 
     console.log('Total files before filtering: ', (files || []).length);
 
     // filter these files for the includes/excludes
     includes.forEach(include => {
-        files = files.filter((file: fs.Dirent) => {
-            const filePath = getRelativePath(root, file);
-            const matched = wildcardTest(include, filePath);
+        files = files.filter((file: string) => {
+            const relativeFilePath = file;
+            const matched = wildcardTest(include, relativeFilePath);
             if (!matched) {
-                console.log('  Excluding ', filePath, ' as it is not part of include rule: ', include);
+                console.log('  Excluding ', relativeFilePath, ' as it is not part of include rule: ', include);
             }
 
             return matched;
@@ -101,10 +101,10 @@ export function readFiles(root: string, includes: Array<string> = [], excludes: 
 
     excludes.forEach(exclude => {
         files = files.filter((file) => {
-            const filePath = getRelativePath(root, file);
-            const matched = !wildcardTest(exclude, filePath);
+            const relativeFilePath = file;
+            const matched = !wildcardTest(exclude, relativeFilePath);
             if (!matched) {
-                console.log('  Excluding ', filePath, ' as it is part of exclude rule: ', exclude);
+                console.log('  Excluding ', relativeFilePath, ' as it is part of exclude rule: ', exclude);
             }
 
             return matched;

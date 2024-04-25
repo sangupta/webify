@@ -1,7 +1,7 @@
 {
     "name": "@sangupta/webify",
     "description": "A simple static site generator that uses markdown/HTML files to generate a Single Page Application website utilizing JSON for content.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "source": "./src/webify.ts",
     "bin": "./dist/webify.cjs",
     "author": {

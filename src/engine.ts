@@ -70,7 +70,7 @@ export async function generateBlog(configFile: string): Promise<void> {
             continue;
         }
 
-        const meta = await processFile(root, distFolder, filePath);
+        const meta = await processFile(root, distFolder, filePath, site.sections);
         if (meta) {
             site.pages.push(meta);
         }

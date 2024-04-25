@@ -3,10 +3,9 @@ import path from 'path';
 import * as yamlFront from 'yaml-front-matter';
 import { computeWPM, extractDate, getRelativePath } from './utils.js';
 import { TEXT_FILE_EXTENSIONS, WORDS_PER_MINUTE } from './const.js';
-import { processMarkdownContent } from './markdown.js';
-import { FrontMatter, PageMetadata, PageType } from './types.js';
+import { FrontMatter, PageMetadata, PageContentType, PageType, SiteSection } from './types.js';
 
-export async function processFile(root: string, dist: string, file: string): Promise<PageMetadata | undefined> {
+export async function processFile(root: string, dist: string, file: string, sections?: SiteSection[]): Promise<PageMetadata | undefined> {
     const relativePath = getRelativePath(root, file);
     const extension = path.extname(file);
     const contentPath = getContentPath(root, dist, file);
@@ -52,6 +51,8 @@ export async function processFile(root: string, dist: string, file: string): Pro
         return;
     }
 
+    const section = findSection(sections || [], relativePath);
+
     // this file needs to be processed
     // create the metadata
     const metadata: PageMetadata = {
@@ -69,6 +70,9 @@ export async function processFile(root: string, dist: string, file: string): Pro
         type: getType(extension),
         readingTime: computeWPM(contentsWithoutMatter, WORDS_PER_MINUTE),
         alias: frontMatter.alias || [],
+
+        pageType: section?.type === 'blog' ? PageType.BLOG_POST : PageType.PAGE,
+        section: section?.id || '',
     };
 
     // check if this is markdown or html
@@ -76,7 +80,7 @@ export async function processFile(root: string, dist: string, file: string): Pro
         case '.md':
         case '.markdown':
             // const processed = await processMarkdownContent(contentsWithoutMatter, frontMatter);
-            writeProcessedFile(contentPath, PageType.Markdown, {
+            writeProcessedFile(contentPath, PageContentType.Markdown, {
                 data: Buffer.from(contentsWithoutMatter).toString('base64'),
                 ...metadata
             });
@@ -86,7 +90,7 @@ export async function processFile(root: string, dist: string, file: string): Pro
         case '.htm':
         case '.txt':
         case '.text':
-            writeProcessedFile(contentPath, PageType.Html, {
+            writeProcessedFile(contentPath, PageContentType.Html, {
                 data: Buffer.from(contentsWithoutMatter).toString('base64'),
                 ...metadata
             });
@@ -99,6 +103,23 @@ export async function processFile(root: string, dist: string, file: string): Pro
     // if published, and not expired, then write data to the site
     // all done, include in the site
     return metadata;
+}
+
+function findSection(sections: SiteSection[], relativePath: string): SiteSection | undefined {
+    if (!sections || sections.length === 0) {
+        return;
+    }
+
+    if (relativePath.at(0) === '/') {
+        relativePath = relativePath.substring(1);
+    }
+
+    for (let index = 0; index < sections.length; index++) {
+        const section = sections[index];
+        if (relativePath.startsWith(section.id)) {
+            return section;
+        }
+    }
 }
 
 /**
@@ -148,7 +169,7 @@ function getRelativeContentPath(root: string, dist: string, file: string): strin
  * @param contentPath 
  * @param data 
  */
-function writeProcessedFile(contentPath: string, pageType: PageType, data: Record<string, any>): void {
+function writeProcessedFile(contentPath: string, pageType: PageContentType, data: Record<string, any>): void {
     console.log('  writing file: ', contentPath);
     if (pageType) {
         data.type = pageType;
@@ -164,22 +185,22 @@ function writeProcessedFile(contentPath: string, pageType: PageType, data: Recor
  * @param extension the file extension
  * @returns the type of the file
  */
-function getType(extension: string): PageType {
+function getType(extension: string): PageContentType {
     switch (extension) {
         case '.md':
         case '.markdown':
-            return PageType.Markdown;
+            return PageContentType.Markdown;
 
         case '.html':
         case '.htm':
-            return PageType.Html;
+            return PageContentType.Html;
 
         case '.txt':
         case '.text':
-            return PageType.Text;
+            return PageContentType.Text;
 
         default:
-            return PageType.Unknown;
+            return PageContentType.Unknown;
     }
 }
 

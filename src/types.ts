@@ -11,7 +11,7 @@ export interface ConfigFile {
     build?: BuildOptions;
     author?: Author;
     socials?: Array<SocialLink>;
-    sections?: Record<string, SiteSection>;
+    sections?: SiteSection[];
 
     theme?: any;
 }
@@ -19,6 +19,7 @@ export interface ConfigFile {
 export type SectionType = 'blog' | 'link';
 
 export interface SiteSection {
+    id: string;
     title: string;
     description: string;
     archive?: boolean;
@@ -43,7 +44,7 @@ export interface Site {
     name: string;
     icon: string;
     author?: Author;
-    sections?: Record<string, SiteSection>;
+    sections?: Array<SiteSection>;
     socials?: Array<SocialLink>;
     pages: Array<PageMetadata>;
     theme?: any;
@@ -58,8 +59,10 @@ export interface PageMetadata {
     id: string; // the unique id for this page
     title: string; // the title to be displayed in the address bar
     path: string; // the path to the file relative to root
-    category: string; // the category in which this post is filed
     description: string; // the description for the page
+    pageType: string; // blog post, page, book page etc
+    section: string; // the section this page belongs to
+    category: string; // the category in which this post is filed
     date: number; // when was it created
     published: boolean; // is the file published
     tags: Array<string>; // associated tags with page
@@ -67,13 +70,27 @@ export interface PageMetadata {
     series?: string; // is the page part of a series, then the series name
     alias: Array<string>; // alias paths for the page
     contentPath: string; // the path to JSON file that contains the content
-    type: PageType; // the type of the page
+    type: PageContentType; // the type of the page
     readingTime: number; // the time to read in minutes
 }
 
-export enum PageType {
+export enum PageContentType {
     Markdown,
     Html,
     Text,
     Unknown
+}
+
+export const BLOG_POST = 'blog-post';
+export const PAGE = 'page';
+export const BOOK_PAGE = 'book-page';
+export const LINK = 'link';
+export const UNKNOWN = 'unknown';
+
+export const PageType = {
+    BLOG_POST,
+    PAGE,
+    BOOK_PAGE,
+    LINK,
+    UNKNOWN
 }
